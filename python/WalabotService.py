@@ -21,34 +21,20 @@ if __name__ == '__main__':
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.bind((TCP_IP, TCP_PORT))
 		s.listen(1)
-
+		conn, addr = s.accept()			
 		while True:
-			conn, addr = s.accept()
-			data = conn.recv(16)
-			try:
-				if data == 'STOP':
-					break
-				if data.startswith(WALABOTDETECT):
-					conn.send('BUFFER OK')
-					print('here1')
-					while True:
-						wlbt.Trigger()  # initiates a scan and records signals
-						targets = wlbt.GetSensorTargets()  # provides a list of identified targets
-						finds = '{"targets": ['
-						index = 0
-						for i, t in enumerate(targets):
-							index += 1
-        						print('Target {}\nx = {}\ny = {}\nz = {}\n'.format(i+1, t.xPosCm, t.yPosCm, t.zPosCm))
-							finds += '{"x": "%s", "y": "%s", "z": "%s"}' % (t.xPosCm, t.yPosCm, t.zPosCm)
-                                			if index < len(targets):
-                                    				finds += ','							
-						finds += ']}'
-						conn.send('%s' % finds)
-
-			except:
-				message = '%s' % sys.exc_value
-				message = message.replace('\\', '/').replace('\n', '').replace('\r', '')
-				conn.send('{"error": "%s"}' % message)
-				conn.close()
-				wlbt.Stop()  # stops Walabot when finished scanning
-				wlbt.Disconnect()  # stops communication with Walabot
+			wlbt.Trigger()  # initiates a scan and records signals
+			targets = wlbt.GetSensorTargets()  # provides a list of identified targets
+			finds = '{"targets": ['
+			index = 0
+			for i, t in enumerate(targets):
+				index += 1
+					print('Target {}\nx = {}\ny = {}\nz = {}\n'.format(i+1, t.xPosCm, t.yPosCm, t.zPosCm))
+				finds += '{"x": "%s", "y": "%s", "z": "%s"}' % (t.xPosCm, t.yPosCm, t.zPosCm)
+								if index < len(targets):
+										finds += ','							
+			finds += ']}'
+			conn.sendall('%s' % finds)			
+		conn.close()
+		wlbt.Stop()  # stops Walabot when finished scanning
+		wlbt.Disconnect()  # stops communication with Walabot
