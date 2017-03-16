@@ -5,7 +5,7 @@ import WalabotAPI as wlbt
 import socket, sys
 
 
-WALABOTDETECT = 'WALABOT'
+WALABOTDETECT = 'SENSORTARGETS'
 
 if __name__ == '__main__':
 	if len(sys.argv) == 2:
