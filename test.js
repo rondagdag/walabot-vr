@@ -1,12 +1,10 @@
-var opencv = require('./walabot');
+var walabot = require('./walabot');
 
-var detector = new opencv.detector({
-    port: 9091
+// Numéro de port facultatif
+var detector = new walabot.detector({
+    port: 8090
 });
-
-setTimeout(function() { 
-	console.log('start');
-	detector.getSensorTargets(function(data, err) {
-   	 console.log(JSON.stringify(data));
-	}); 
-},10000);
+detector.frame(function(data) {
+    // image est au format base64
+    console.log(data);
+});
