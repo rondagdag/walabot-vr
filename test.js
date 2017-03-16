@@ -1,4 +1,4 @@
-var opencv = require('walabot');
+var opencv = require('./walabot');
 
 var detector = new opencv.detector({
     port: 9009
