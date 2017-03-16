@@ -7,7 +7,6 @@ var options = {
     encoding: 'UTF-8'
 };
 
-exports.detector = Detector;
 
 function Detector(conf) {
     this.port = 4004;
@@ -18,19 +17,24 @@ function Detector(conf) {
     }
     var script = path.resolve(__dirname, 'python/WalabotService.py');
     var command = 'python ' + script + ' ' + this.port;
-    child.exec(command, options, function(error, stdout, stderr) {
+	console.log(command);
+
+    /*child.exec(command, options, function(error, stdout, stderr) {
+	console.log('here');
         if (error) {
             console.log(stderr);
         }
-    });
+    });*/
     this.clients = [];
 };
+
 Detector.prototype.connect = function(callback, code, send) {
     var client = new net.Socket({
         readable: true,
         writable: true
     });
     client.on('error', function(err) {
+	console.log(err);
         if (err) {
             callback(null, err);
         }
@@ -68,7 +72,7 @@ Detector.prototype.disconnect = function(client) {
 };
 
 Detector.prototype.getSensorTargets = function(callback) {
-    var send = '';
+    var send = 'connect';
     this.connect(callback, 'SENSORTARGETS', send);
 };
 
@@ -81,3 +85,5 @@ exports.pythonVersion = function() {
     var script = path.resolve(__dirname, 'python/version.py');
     return child.execSync('python ' + script, options);
 };
+
+exports.detector = Detector;
