@@ -40,7 +40,7 @@ function Detector(conf) {
 
     this.callback = null;
     var self = this;
-    var marqueur = 'SENSORTARGETS';
+    var marqueur = 'TARGETS';
     var tmp_image = null;
     this.client.on('error', function(err) {
         if (err) {

@@ -5,7 +5,6 @@ import WalabotAPI as wlbt
 import socket, sys
 
 if __name__ == '__main__':
-	WALABOTDETECT = 'SENSORTARGETS'
 	wlbt.Init()  # load the WalabotSDK to the Python wrapper	
 	wlbt.SetSettingsFolder()  # set the path to the essetial database files
 	wlbt.ConnectAny()  # establishes communication with the Walabot
@@ -29,12 +28,12 @@ if __name__ == '__main__':
 			index = 0
 			for i, t in enumerate(targets):
 				index += 1
-					print('Target {}\nx = {}\ny = {}\nz = {}\n'.format(i+1, t.xPosCm, t.yPosCm, t.zPosCm))
+				print('Target {}\nx = {}\ny = {}\nz = {}\n'.format(i+1, t.xPosCm, t.yPosCm, t.zPosCm))
 				finds += '{"x": "%s", "y": "%s", "z": "%s"}' % (t.xPosCm, t.yPosCm, t.zPosCm)
-								if index < len(targets):
-										finds += ','							
+				if index < len(targets):
+					finds += ','							
 			finds += ']}'
-			conn.sendall('%s' % finds)			
+			conn.sendall('TARGETS%s' % finds)			
 		conn.close()
 		wlbt.Stop()  # stops Walabot when finished scanning
 		wlbt.Disconnect()  # stops communication with Walabot
