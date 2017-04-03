@@ -9,7 +9,11 @@ if __name__ == '__main__':
 	wlbt.SetSettingsFolder()  # set the path to the essetial database files
 	wlbt.ConnectAny()  # establishes communication with the Walabot
 	wlbt.SetProfile(wlbt.PROF_SENSOR)  # set scan profile out of the possibilities
+	wlbt.SetThreshold(35)
+	wlbt.SetArenaR(50,300,10)
+	
 	wlbt.SetDynamicImageFilter(wlbt.FILTER_TYPE_MTI)  # specify filter to use
+	
 	wlbt.Start()  # starts Walabot in preparation for scanning
 	system('cls' if platform == 'win32' else 'clear')  # clear the terminal
 
