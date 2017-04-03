@@ -31,9 +31,10 @@ if __name__ == '__main__':
 				print('Target {}\nx = {}\ny = {}\nz = {}\n'.format(i+1, t.xPosCm, t.yPosCm, t.zPosCm))
 				finds += '{"x": "%s", "y": "%s", "z": "%s"}' % (t.xPosCm, t.yPosCm, t.zPosCm)
 				if index < len(targets):
-					finds += ','							
+					finds += ','												
 			finds += ']}'
-			conn.sendall('TARGETS%s' % finds)			
+			my_str = 'TARGETS%s' % finds
+			conn.sendall(str.encode(my_str))			
 		conn.close()
 		wlbt.Stop()  # stops Walabot when finished scanning
 		wlbt.Disconnect()  # stops communication with Walabot
