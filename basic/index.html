@@ -1,18 +1,74 @@
 <html>
   <head>
     <title>A-Frame Broadcast Component - Basic</title>
-    <script src="https://aframe.io/releases/0.2.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
     <script src="lib/aframe-interpolate-component.min.js"></script>    
-    <script src="https://rawgit.com/ngokevin/aframe-broadcast-component/master/dist/aframe-broadcast-component.min.js"></script>
+    <script src="https://rawgit.com/rondagdag/aframe-broadcast-component/master/dist/aframe-broadcast-component.min.js"></script>
     <script src="components/follow.js"></script>
   </head>
   <body>
-    <a-scene broadcast="url: http://192.168.1.31:12000">
-      <a-entity camera look-controls wasd-controls
+    <a-scene broadcast="url: http://localhost:12000">
+
+     <a-assets>
+
+        <img id="sky" src="img/sky.jpg" crossorigin="anonymous" />
+        <a-asset-item id="grass" src="img/grass.jpg"></a-asset-item>
+
+        <a-asset-item id="bunny-obj" src="models/rabbit.obj"></a-asset-item>
+        <a-asset-item id="bunny-mtl" src="models/rabbit.mtl"></a-asset-item>
+
+
+        <a-asset-item id="pinkegg-obj" src="/models/egg.obj"></a-asset-item>
+        <a-asset-item id="pinkegg-mtl" src="/models/pinkegg.mtl"></a-asset-item>
+
+
+        <a-asset-item id="orangeegg-obj" src="/models/egg.obj"></a-asset-item>
+        <a-asset-item id="orangeegg-mtl" src="/models/orangeegg.mtl"></a-asset-item>
+
+        <a-asset-item id="greenegg-obj" src="/models/egg.obj"></a-asset-item>
+        <a-asset-item id="greenegg-mtl" src="/models/greenegg.mtl"></a-asset-item>
+
+         <a-mixin id="avatar"
+                geometry="primitive: box; depth: 0.3; height: 0.3; width: 0.3"
+                material="color: #222"
+                template="src: #avatar-template"></a-mixin>
+
+     </a-assets>
+
+      <script id="avatar-template" type="text/html-template">
+       <a-entity rotation="0 180 0">
+            <a-entity mixin="eye" geometry="radius: 0.08"
+                      material="shader: flat; side: double"
+                      position="-0.1 0.1 0.18">
+              <a-entity mixin="eye" geometry="radius: 0.02"
+                        material="color: #222"
+                        position="0 0 0.03"></a-entity>
+            </a-entity>
+            <a-entity mixin="eye" geometry="radius: 0.08" position="0.1 0.1 0.18">
+              <a-entity mixin="eye" geometry="radius: 0.02"
+                        material="color: #222" position="0 0 0.03"></a-entity>
+            </a-entity>
+          </a-entity>
+          <!-- Arms. -->
+          <a-entity class="arms" position="0 -0.3 0">
+            <a-entity mixin="arm" position="-0.3 -0.25 0" rotation="0 0 -10"></a-entity>
+            <a-entity mixin="arm" position="0.3 -0.25 0" rotation="0 0 10"></a-entity>
+          </a-entity>
+        </script>
+
+      <a-entity camera look-controls wasd-controls 
                 broadcast="send: geometry, material, position, rotation"
                 geometry="primitive: box; depth: 0.3; height: 0.3; width: 0.3"
                 material="color: #222"
-                position="0 1.8 5"></a-entity>
+                position="0 1.8 5">
+
+            <!--<a-obj-model 
+              animation-mixer
+              rotation="0 180 0"
+              position="0 -1.79 -0.10"
+              scale="1.2 1.2 1.2"
+              src="#bunny-obj" mtl="#bunny-mtl"></a-obj-model>-->
+      </a-entity>
 
       <a-entity broadcast="send: position" follow="[camera]">
         <a-entity broadcast="send: geometry, material, position"
@@ -32,9 +88,20 @@
       <a-light type="point" intensity="1.2"></a-light>
       <a-sphere color="#FFF" radius="0.2" shader="flat" position="0 0.2 0"></a-sphere>
 
-      <a-plane rotation="-90 0 0" color="#0C2233" height="25" width="25"
-               position="0 -0.1 0"></a-plane>
-      <a-sky color="#222"></a-sky>
+      <!--<a-plane rotation="-90 0 0" color="#0C2233" height="25" width="25"
+               position="0 -0.1 0"></a-plane>-->
+
+      <a-entity position="0 0 0" static-body
+        geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
+        material="src: #grass; repeat: 10000 10000; transparent: true; metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;"></a-entity>
+      
+      
+      <a-entity light="color: #ddddff; intensity: .5; type: ambient;" visible=""></a-entity>
+      <a-entity light="color: #ffaaff; intensity: 1.5" position="5 5 5"></a-entity>
+
+      <!--<a-sky color="#222"></a-sky>-->
+      <a-sky src="#sky" rotation="0 -90 0"></a-sky>
+
     </a-scene>
   </body>
 </html>

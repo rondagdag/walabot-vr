@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "budo --dir basic --port 8000 --live --open"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {    
-    "socket.io": "^1.7.3"
+    "socket.io": "^1.7.3",
+     "budo": "^7.1.0"
   }
 }
