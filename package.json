@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "budo --dir basic --port 8000 --live --open"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",

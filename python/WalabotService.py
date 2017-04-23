@@ -10,13 +10,15 @@ if __name__ == '__main__':
 	wlbt.ConnectAny()  # establishes communication with the Walabot
 	wlbt.SetProfile(wlbt.PROF_SENSOR)  # set scan profile out of the possibilities
 	wlbt.SetThreshold(35)
-	wlbt.SetArenaR(50,300,10)
+	wlbt.SetArenaR(50,400,4)
+	wlbt.SetArenaPhi(-45,45,2)
+	wlbt.SetArenaTheta(-20,20,10)
 	
 	wlbt.SetDynamicImageFilter(wlbt.FILTER_TYPE_MTI)  # specify filter to use
 	
 	wlbt.Start()  # starts Walabot in preparation for scanning
 	system('cls' if platform == 'win32' else 'clear')  # clear the terminal
-
+	numOfTargetsToDisplay = 1
 	if len(sys.argv) == 2:
 		TCP_IP = '127.0.0.1'
 		TCP_PORT = int(sys.argv[1])
@@ -31,11 +33,12 @@ if __name__ == '__main__':
 			finds = '{"targets": ['
 			index = 0
 			for i, t in enumerate(targets):
-				index += 1
-				print('Target {}\nx = {}\ny = {}\nz = {}\n'.format(i+1, t.xPosCm, t.yPosCm, t.zPosCm))
-				finds += '{"x": "%s", "y": "%s", "z": "%s"}' % (t.xPosCm, t.yPosCm, t.zPosCm)
-				if index < len(targets):
-					finds += ','												
+				if i < numOfTargetsToDisplay:
+					index += 1
+					print('Target {}\nx = {}\ny = {}\nz = {}\n'.format(i+1, t.xPosCm, t.yPosCm, t.zPosCm))
+					finds += '{"x": "%s", "y": "%s", "z": "%s"}' % (t.xPosCm, t.yPosCm, t.zPosCm)
+					#if index < len(targets):
+					#	finds += ','												
 			finds += ']}'
 			my_str = 'TARGETS%s' % finds
 			conn.sendall(str.encode(my_str))			

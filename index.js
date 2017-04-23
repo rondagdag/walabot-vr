@@ -29,6 +29,14 @@ socketServer.on('connection', function (socket) {
   }); 
 });
 
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+var width = 100;
+var height = 100;
+var rMax = 400;
+var phi = 45;
+
  detector.frame(function(data) {    
       //console.log(data);
       var sendQueue = [];
@@ -37,6 +45,7 @@ socketServer.on('connection', function (socket) {
       var result = JSON.parse(data);
       if (!result.targets) { return; }
       console.log(result.targets);
+
       result.targets.forEach(function addQueue(element, index, array) {
           color = "pink";
           switch(index) {
@@ -52,13 +61,24 @@ socketServer.on('connection', function (socket) {
                 default:
                     color = "pink";
         }
-        sendQueue.push(
-            {
-                id: "egg" + index,                
-                components: [ [ "position" , element.x / 10 + " " + 2 + " " + -element.z / 10 ],
-                 [ "obj-model" , "obj: #" + color + "egg-obj; mtl: #" + color + "egg-mtl" ]]
-            }
-        );
+        if (index == 0) 
+        {
+            //x = width / 2 * (
+            //        element.y / (rMax * Math.sin(Math.radians(phi))) + 1)
+            //z = height * (1 - element.z / rMax)
+            
+            x = (width / 2 * (
+                    element.y / (rMax * Math.sin(Math.radians(phi))) + 1)) - (width / 2)
+            z = height * (element.z / rMax)
+            sendQueue.push(
+                {
+                    id: "egg" + index,                
+                    components: [ [ "position" , x  + " " + 10 + " " + -z ], [ "rotation" , "0 180 0 " ],
+                    [ "obj-model" , "obj: #bunnyrabbit-obj; mtl: #bunnyrabbit-mtl" ]]
+                    //[ "obj-model" , "obj: #" + color + "egg-obj; mtl: #" + color + "egg-mtl" ]]
+                }
+            );
+        }
       });        
         socketServer.local.emit('broadcast', sendQueue);
         //console.log(sendQueue);
